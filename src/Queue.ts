@@ -18,10 +18,9 @@ export default class Queue extends EventEmitter {
     };
 
     this.on('event', async (d) => {
-      console.log(d);
       try {
         // if the track wasn't replaced, continue playing the next song
-        if (d.type !== 'TrackEndEvent' || d.reason !== 'REPLACED') {
+        if (d.reason !== 'REPLACED') {
           await this._redis.del(this.keys.np);
           await this.start();
         }
@@ -45,7 +44,6 @@ export default class Queue extends EventEmitter {
 
   public async start() {
     const np = await this.current();
-    console.log(np);
     if (np) {
       await this.player.play(np.track, { start: Number(np.position) || 0 });
       return true;
@@ -71,8 +69,9 @@ export default class Queue extends EventEmitter {
     return this._redis.lrem(this.keys.list, 1, track);
   }
 
-  public next() {
-    return this.player.stop();
+  public async next() {
+    await this._redis.del(this.keys.np);
+    return this.start();
   }
 
   public async stop() {
