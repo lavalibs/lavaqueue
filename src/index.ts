@@ -1,9 +1,10 @@
 import BaseClient from 'lavalink';
 import QueueStore from './QueueStore';
-import { ClientOptions } from 'lavalink/typings/core/Client';
+import Queue from './Queue';
 import Rest from './Rest';
+import { ClientOptions } from 'lavalink/typings/core/Client';
 
-export default class Client extends BaseClient {
+class Client extends BaseClient {
   public readonly queues: QueueStore = new QueueStore(this);
   public readonly rest: Rest = new Rest(this);
 
@@ -19,3 +20,12 @@ export default class Client extends BaseClient {
     });
   }
 }
+
+export {
+  Client,
+  QueueStore,
+  Queue,
+  Rest,
+}
+
+export default Client;
