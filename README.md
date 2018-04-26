@@ -1,29 +1,38 @@
 # Lavaqueue
 
-A simple queue system for Lavalink, backed by Redis.
+A simple queue system for Lavalink, backed by Redis. Built as extension of [my generic Lavalink wrapper](https://github.com/appellation/lavalink.js).
 
 ## How to use
 
 ```js
 const { Client: Lavaqueue } = require('lavaqueue');
-const voice = new Client({
-  userID: '', // the user that will be sending audio
-  shards: '', // how many shards the bot has
-  password: '', // your lavalink password
-});
+const voice = new class extends Lavaqueue {
+  constructor() {
+    super({
+      userID: '', // the user that will be sending audio
+      password: '', // your lavalink password
+      hosts: {
+        rest: '', // your lavalink rest endpoint (include port and protocol)
+        ws: '', // your lavalink ws endpoint (include port and protocol)
+        redis: '', // your redis instance
+      },
+    });
+  }
 
-voice.queues.connect({ host: 'yourredis' }); // connect the queues to redis
-voice.rest.configure('lavalink:port'); // setup the Lavalink REST url and port
-voice.connect('lavalink:port'); // connect to the Lavalink WS
+  send(guildID, packet) {
+    // send the packet to the appropriate gateway connection
+  }
+};
 
-// make sure to forward VOICE_STATE_UPDATE and VOICE_SERVER_UPDATE packets to Lavalink
+voice.connect(); // connect to the Lavalink WS
 
 async function connect() {
   const songs = await voice.rest.load('some identifier');
   const queue = voice.queues.get('some guild ID');
-  await queue.add(...songs.map(s => s.track));
-  // join the voice channel somehow
-  await queue.start();
+
+  await queue.player.join('channel id'); // join the voice channel
+  await queue.add(...songs.map(s => s.track)); // add songs to the queue
+  await queue.start(); // start the queue
 }
 
 async function skip() {
@@ -46,11 +55,7 @@ Queues are resilient to crashes, meaning it's safe to blindly restart a queue: i
 - `next()` - skip to the next song
 - `stop()` - stop playback and clear the queue
 - `current()` - retrieve the current song: returns an object with properties `track` and `position`
-
-### `Rest`
-- `configure(url)` - setup the Lavalink URL to load from
-- `load(identifier)` - load a Lavalink identifier
-- `decode(identifier/s)` - decode a single identifier (accepts `string`) or multiple (accepts `Array<string>`)
+- `player` - the [lavalink](https://github.com/appellation/lavalink.js) player
 
 ### `QueueStore`
 - `connect(url/connection)` - connect to Redis or use an existing *promisified* Redis connection (recommended: `redis-p`)

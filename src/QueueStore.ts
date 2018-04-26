@@ -1,21 +1,21 @@
 import Queue from './Queue';
 import Client from 'lavalink';
-import * as Redis from 'redis-p';
+import * as Redis from 'ioredis';
 
 export default class QueueStore extends Map<string, Queue> {
   public readonly client: Client;
-  public redis?: Redis.RedisClient;
+  public redis?: Redis.Redis;
 
   constructor(client: Client) {
     super();
     this.client = client;
   }
 
-  public connect(conn: Redis.RedisClient): Redis.RedisClient;
-  public connect(conn?: Redis.ClientOpts): Redis.RedisClient;
-  public connect(conn?: Redis.ClientOpts | Redis.RedisClient): Redis.RedisClient {
-    if (conn instanceof Redis.RedisClient) this.redis = conn;
-    else this.redis = Redis.createClient(conn);
+  public connect(conn?: Redis.RedisOptions | Redis.Redis): Redis.Redis {
+    if (this.redis) return this.redis;
+
+    if (conn instanceof Redis) this.redis = conn;
+    else this.redis = new Redis(conn);
     return this.redis;
   }
 
@@ -40,7 +40,7 @@ export default class QueueStore extends Map<string, Queue> {
     for (const guild of guilds) this.get(guild).start();
   }
 
-  protected async _scan(pattern: string, cursor: string = '0', keys: string[] = []): Promise<string[]> {
+  protected async _scan(pattern: string, cursor: number = 0, keys: string[] = []): Promise<string[]> {
     if (!this.redis) throw new Error('attempted to scan without a Redis connection');
 
     const response = await this.redis.scan(cursor, pattern);
