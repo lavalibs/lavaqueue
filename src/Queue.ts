@@ -3,6 +3,11 @@ import { Redis } from 'ioredis';
 import QueueStore from './QueueStore';
 import { EventEmitter } from 'events';
 
+export interface NP {
+  position?: number;
+  track: string;
+}
+
 export default class Queue extends EventEmitter {
   public readonly store: QueueStore;
   public readonly guildID: string;
@@ -83,8 +88,9 @@ export default class Queue extends EventEmitter {
     return this._redis.del(this.keys.list);
   }
 
-  public current(): PromiseLike<any> {
-    return this._redis.hgetall(this.keys.np);
+  public async current(): Promise<NP | null> {
+    const cur = await this._redis.hgetall(this.keys.np) as NP;
+    return Object.keys(cur).length ? cur : null;
   }
 
   protected get _redis(): Redis {
