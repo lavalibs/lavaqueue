@@ -6,6 +6,9 @@
   "types": "typings/index.d.ts",
   "repository": "https://github.com/appellation/lavaqueue.git",
   "license": "MIT",
+  "scripts": {
+    "prepare": "gulp"
+  },
   "dependencies": {
     "ioredis": "^3.2.2"
   },
