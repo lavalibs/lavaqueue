@@ -1,5 +1,5 @@
 import Client, { Player } from 'lavalink';
-import { RedisClient } from 'redis-p';
+import { Redis } from 'ioredis';
 import QueueStore from './QueueStore';
 import { EventEmitter } from 'events';
 
@@ -65,7 +65,7 @@ export default class Queue extends EventEmitter {
     return this._redis.rpush(this.keys.list, ...tracks);
   }
 
-  public remove(track: string) {
+  public remove(track: string): PromiseLike<number> {
     return this._redis.lrem(this.keys.list, 1, track);
   }
 
@@ -83,11 +83,11 @@ export default class Queue extends EventEmitter {
     return this._redis.del(this.keys.list);
   }
 
-  public current() {
+  public current(): PromiseLike<any> {
     return this._redis.hgetall(this.keys.np);
   }
 
-  protected get _redis() {
+  protected get _redis(): Redis {
     if (this.store.redis) return this.store.redis;
     throw new Error('no redis client available');
   }

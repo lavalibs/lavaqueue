@@ -7,8 +7,10 @@
   "repository": "https://github.com/appellation/lavaqueue.git",
   "license": "MIT",
   "dependencies": {
-    "ioredis": "^3.2.2",
-    "lavalink": "^0.4.3"
+    "ioredis": "^3.2.2"
+  },
+  "peerDependencies": {
+    "lavalink": "^0.5.0"
   },
   "devDependencies": {
     "@spectacles/gateway": "^0.8.5",
@@ -16,9 +18,11 @@
     "@types/node": "^9.4.6",
     "@types/ws": "^4.0.1",
     "del": "^3.0.0",
+    "discord.js": "^11.3.2",
     "gulp": "^3.9.1",
     "gulp-sourcemaps": "^2.6.4",
     "gulp-typescript": "^4.0.1",
+    "lavalink": "^0.5.0",
     "typescript": "^2.7.2"
   }
 }
