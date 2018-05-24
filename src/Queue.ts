@@ -94,7 +94,6 @@ export default class Queue extends EventEmitter {
   }
 
   protected get _redis(): Redis {
-    if (this.store.redis) return this.store.redis;
-    throw new Error('no redis client available');
+    return this.store.redis;
   }
 }

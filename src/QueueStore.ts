@@ -3,20 +3,8 @@ import Client from 'lavalink';
 import * as Redis from 'ioredis';
 
 export default class QueueStore extends Map<string, Queue> {
-  public readonly client: Client;
-  public redis?: Redis.Redis;
-
-  constructor(client: Client) {
+  constructor(public readonly client: Client, public redis: Redis.Redis) {
     super();
-    this.client = client;
-  }
-
-  public connect(conn?: Redis.RedisOptions | Redis.Redis): Redis.Redis {
-    if (this.redis) return this.redis;
-
-    if (conn instanceof Redis) this.redis = conn;
-    else this.redis = new Redis(conn);
-    return this.redis;
   }
 
   public get(key: string): Queue {
@@ -41,9 +29,7 @@ export default class QueueStore extends Map<string, Queue> {
   }
 
   protected async _scan(pattern: string, cursor: number = 0, keys: string[] = []): Promise<string[]> {
-    if (!this.redis) throw new Error('attempted to scan without a Redis connection');
-
-    const response = await this.redis.scan(cursor, pattern);
+    const response = await this.redis.scan(cursor, 'MATCH', pattern);
     keys.push(...response[1]);
 
     if (response[0] === '0') return keys;
