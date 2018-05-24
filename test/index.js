@@ -1,6 +1,6 @@
 const { Client: Lavaqueue } = require('../dist');
 const { Client: Gateway } = require('@spectacles/gateway');
-const gateway = new Gateway('MjE4ODQ0NDIwNjEzNzM0NDAx.DYNUEQ.OBnZCtuBj5qbDkc-MbeD0zLwe2g');
+const gateway = new Gateway(process.env.TOKEN);
 const client = new class extends Lavaqueue {
   constructor() {
     super({
