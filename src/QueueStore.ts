@@ -18,9 +18,9 @@ export default class QueueStore extends Map<string, Queue> {
   }
 
   public async start() {
-    const keys = await this._scan('playlists.*.np');
+    const keys = await this._scan('playlists.*');
     const guilds = keys.map(key => {
-      const match = key.match(/playlists\.(\d+)\.np/);
+      const match = key.match(/^playlists\.(\d+)/);
       if (match) return match[1];
       throw new Error('error extracting guild ID from playlist');
     });

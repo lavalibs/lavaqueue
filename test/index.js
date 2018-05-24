@@ -30,6 +30,21 @@ const queue = client.queues.get('281630801660215296');
 
 gateway.on('MESSAGE_CREATE', async (shard, m) => {
   console.log(m.content);
+
+  const queue = await client.queues.get('281630801660215296');
+
+  if (m.content === 'add') {
+    const songs = await client.load('https://twitch.tv/monstercat');
+    await queue.add(...songs.map(s => s.track));
+    return;
+  }
+
+  if (m.content === 'play') {
+    await queue.player.join('281630801660215297');
+    await queue.start();
+    return;
+  }
+
   try {
     console.log(await eval(m.content));
   } catch (e) {
@@ -39,12 +54,5 @@ gateway.on('MESSAGE_CREATE', async (shard, m) => {
 
 (async () => {
   await gateway.spawn();
-  await client.queues.redis.flushall();
-
-  const songs = await client.load('https://twitch.tv/monstercat');
-  const queue = await client.queues.get('281630801660215296');
-
-  await queue.add(...songs.map(s => s.track));
-  await queue.player.join('281630801660215297');
-  await queue.start();
+  // await client.queues.redis.flushall();
 })();
