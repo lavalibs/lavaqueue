@@ -24,8 +24,6 @@ const voice = new class extends Lavaqueue {
   }
 };
 
-voice.connect(); // connect to the Lavalink WS
-
 async function connect() {
   const songs = await voice.rest.load('some identifier');
   const queue = voice.queues.get('some guild ID');
