@@ -25,11 +25,11 @@ const voice = new class extends Lavaqueue {
 };
 
 async function connect() {
-  const songs = await voice.rest.load('some identifier');
+  const res = await voice.load('some identifier');
   const queue = voice.queues.get('some guild ID');
 
   await queue.player.join('channel id'); // join the voice channel
-  await queue.add(...songs.map(s => s.track)); // add songs to the queue
+  await queue.add(...res.tracks.map(t => t.track)); // add songs to the queue
   await queue.start(); // start the queue
 }
 
