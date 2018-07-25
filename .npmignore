@@ -3,4 +3,5 @@ test/
 src/
 .env
 tsconfig.json
+*.log
 gulpfile.js
