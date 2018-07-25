@@ -24,8 +24,6 @@ const voice = new class extends Lavaqueue {
   }
 };
 
-voice.connect(); // connect to the Lavalink WS
-
 async function connect() {
   const songs = await voice.rest.load('some identifier');
   const queue = voice.queues.get('some guild ID');
@@ -49,14 +47,20 @@ Queues are resilient to crashes, meaning it's safe to blindly restart a queue: i
 ## Reference
 
 ### `Queue`
+- `store: QueueStore`
+- `guildID: string`
+- *readonly* `player` - the [lavalink](https://github.com/appellation/lavalink.js) player
 - `start()` - start the queue
-- `add(...tracks)` - add tracks to the queue
-- `remove(track)` - remove a track from the queue
+- `add(...tracks: string[])` - add tracks to the queue
+- `remove(track: string)` - remove a track from the queue
 - `next()` - skip to the next song
 - `stop()` - stop playback and clear the queue
+- `clear()` - clear the queued songs
 - `current()` - retrieve the current song: returns an object with properties `track` and `position`
-- `player` - the [lavalink](https://github.com/appellation/lavalink.js) player
+- `tracks(): Promise<string[]>` - retrieves queued tracks
 
-### `QueueStore`
-- `connect(url/connection)` - connect to Redis or use an existing *promisified* Redis connection (recommended: `redis-p`)
+### `QueueStore extends Map<string, Queue>`
+- `client: Client`
+- `redis: Redis` - the ioredis instance this queue store is using
 - `start()` - start all currently playing queues
+- `get(key: string): Queue` - gets the specified queue, or creates one if none is found
