@@ -1,4 +1,4 @@
-import Client, { Player } from 'lavalink';
+import { Player } from 'lavalink';
 import { Redis } from 'ioredis';
 import QueueStore from './QueueStore';
 import { EventEmitter } from 'events';
@@ -23,14 +23,13 @@ export default class Queue extends EventEmitter {
     };
 
     this.on('event', async (d) => {
-      try {
-        // if the track wasn't replaced, continue playing the next song
-        if (d.reason !== 'REPLACED') {
-          await this._redis.del(this.keys.np);
-          await this.start();
+      // if the track wasn't replaced, continue playing the next song
+      if (d.reason !== 'REPLACED') {
+        try {
+          await this.next();
+        } catch (e) {
+          this.store.client.emit('error', e);
         }
-      } catch (e) {
-        this.store.client.emit('error', e);
       }
     });
 
