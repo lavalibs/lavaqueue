@@ -93,8 +93,8 @@ export default class Queue extends EventEmitter {
     return Object.keys(cur).length ? cur : null;
   }
 
-  public tracks(): PromiseLike<string[]> {
-    return this._redis.lrange(this.keys.list, 0, -1);
+  public tracks(start: number = 0, end: number = -1): PromiseLike<string[]> {
+    return this._redis.lrange(this.keys.list, start, end);
   }
 
   protected get _redis(): Redis {
