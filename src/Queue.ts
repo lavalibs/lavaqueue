@@ -9,14 +9,10 @@ export interface NP {
 }
 
 export default class Queue extends EventEmitter {
-  public readonly store: QueueStore;
-  public readonly guildID: string;
   public readonly keys: { list: string, np: string };
 
-  constructor(store: QueueStore, guildID: string) {
+  constructor(public readonly store: QueueStore, public readonly guildID: string) {
     super();
-    this.store = store;
-    this.guildID = guildID;
     this.keys = {
       list: `playlists.${this.guildID}`,
       np: `playlists.${this.guildID}.np`,
@@ -64,9 +60,14 @@ export default class Queue extends EventEmitter {
     }
   }
 
-  public add(...tracks: string[]) {
+  public add(...tracks: string[]): Promise<number> {
     if (!tracks.length) return Promise.resolve(0);
     return this._redis.rpush(this.keys.list, ...tracks);
+  }
+
+  public unshift(...tracks: string[]): Promise<number> {
+    if (!tracks.length) return Promise.resolve(0);
+    return this._redis.lpush(this.keys.list, ...tracks);
   }
 
   public remove(track: string): PromiseLike<number> {
