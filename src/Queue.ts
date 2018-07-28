@@ -74,9 +74,14 @@ export default class Queue extends EventEmitter {
     return this._redis.lrem(this.keys.list, 1, track);
   }
 
-  public async next() {
+  public async next(count?: number) {
+    if (count && count > 1) await this.trim(count - 1, -1);
     await this._redis.del(this.keys.np);
     return this.start();
+  }
+
+  public trim(start: number, stop: number): PromiseLike<string> {
+    return this._redis.ltrim(this.keys.list, start, stop);
   }
 
   public async stop() {
