@@ -17,7 +17,7 @@ export default class QueueStore extends Map<string, Queue> {
     return queue;
   }
 
-  public async start() {
+  public async start(filter?: (guildID: string) => boolean) {
     const keys = await this._scan('playlists.*');
     const guilds = keys.map(key => {
       const match = key.match(/^playlists\.(\d+)/);
@@ -25,7 +25,7 @@ export default class QueueStore extends Map<string, Queue> {
       throw new Error('error extracting guild ID from playlist');
     });
 
-    for (const guild of guilds) this.get(guild).start();
+    for (const guild of guilds) if (!filter || filter(guild)) this.get(guild).start();
   }
 
   protected async _scan(pattern: string, cursor: number = 0, keys: string[] = []): Promise<string[]> {
