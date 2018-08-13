@@ -44,7 +44,7 @@ export default class Queue extends EventEmitter {
 
   public async start() {
     const np = await this.current();
-    if (np) {
+    if (np && np.track) {
       await this.player.play(np.track, { start: Number(np.position) || 0 });
       return true;
     } else {
