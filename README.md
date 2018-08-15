@@ -45,17 +45,26 @@ Queues are resilient to crashes, meaning it's safe to blindly restart a queue: i
 - `store: QueueStore`
 - `guildID: string`
 - *readonly* `player` - the [lavalink](https://github.com/appellation/lavalink.js) player
-- `start()` - start the queue
-- `add(...tracks: string[])` - add tracks to the queue
-- `remove(track: string)` - remove a track from the queue
-- `next()` - skip to the next song
-- `stop()` - stop playback and clear the queue
-- `clear()` - clear the queued songs
-- `current()` - retrieve the current song: returns an object with properties `track` and `position`
-- `tracks(): Promise<string[]>` - retrieves queued tracks
+- `start(): Promise<boolean>` - start the queue
+- `add(...tracks: string[]): Promise<number>` - add tracks to the queue
+- `unshift(...tracks: string[]): Promise<number>` - add tracks to the front of the queue
+- `remove(track: string): PromiseLike<number>` - remove a track from the queue
+- `next(count?: number): Promise<boolean>` - skip to the next song
+- `trim(start: number, end: number): PromiseLike<string>` - trim the queue to between the specified positions
+- `stop(): Promise<void>` - stop playback and clear the queue
+- `clear(): PromiseLike<number>` - clear the queued songs
+- `current(): Promise<NP | null>` - retrieve the current song: returns an object with properties `track` and `position`
+- `tracks(start: number = 0, end: number = -1): Promise<string[]>` - retrieves queued tracks
+
+```ts
+interface NP {
+  position?: number;
+  track: string;
+}
+```
 
 ### `QueueStore extends Map<string, Queue>`
 - `client: Client`
 - `redis: Redis` - the ioredis instance this queue store is using
-- `start()` - start all currently playing queues
+- `start(filter?: (guildID: string) => boolean)` - start all currently playing queues, with an optional filter callback
 - `get(key: string): Queue` - gets the specified queue, or creates one if none is found

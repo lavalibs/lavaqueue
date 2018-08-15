@@ -42,7 +42,7 @@ export default class Queue extends EventEmitter {
     return this.store.client.players.get(this.guildID);
   }
 
-  public async start() {
+  public async start(): Promise<boolean> {
     const np = await this.current();
     if (np && np.track) {
       await this.player.play(np.track, { start: Number(np.position) || 0 });
@@ -74,14 +74,14 @@ export default class Queue extends EventEmitter {
     return this._redis.lrem(this.keys.list, 1, track);
   }
 
-  public async next(count?: number) {
+  public async next(count?: number): Promise<boolean> {
     if (count && count > 1) await this.trim(0, count - 1);
     await this._redis.del(this.keys.np);
     return this.start();
   }
 
-  public trim(start: number, stop: number): PromiseLike<string> {
-    return this._redis.ltrim(this.keys.list, start, stop);
+  public trim(start: number, end: number): PromiseLike<string> {
+    return this._redis.ltrim(this.keys.list, start, end);
   }
 
   public async stop() {
@@ -89,7 +89,7 @@ export default class Queue extends EventEmitter {
     await this.player.stop();
   }
 
-  public clear() {
+  public clear(): PromiseLike<number> {
     return this._redis.del(this.keys.list);
   }
 
