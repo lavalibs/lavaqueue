@@ -75,7 +75,7 @@ export default class Queue extends EventEmitter {
   }
 
   public async next(count?: number): Promise<boolean> {
-    if (count && count > 1) await this.trim(0, count - 1);
+    if (count && count > 1) await this.trim(count - 1, -1);
     await this._redis.del(this.keys.np);
     return this.start();
   }
