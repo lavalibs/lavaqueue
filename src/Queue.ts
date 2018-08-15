@@ -99,6 +99,7 @@ export default class Queue extends EventEmitter {
   }
 
   public tracks(start: number = 0, end: number = -1): PromiseLike<string[]> {
+    if (end === Infinity) end = -1;
     return this._redis.lrange(this.keys.list, start, end);
   }
 
