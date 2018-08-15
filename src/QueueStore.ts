@@ -25,7 +25,10 @@ export default class QueueStore extends Map<string, Queue> {
       throw new Error('error extracting guild ID from playlist');
     });
 
-    for (const guild of guilds) if (!filter || filter(guild)) this.get(guild).start();
+    await Promise.all(guilds.map(guild => {
+      if (!filter || filter(guild)) return this.get(guild).start();
+      return false;
+    }));
   }
 
   protected async _scan(pattern: string, cursor: number = 0, keys: string[] = []): Promise<string[]> {
