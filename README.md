@@ -6,23 +6,18 @@ A simple queue system for Lavalink, backed by Redis. Built as extension of [my g
 
 ```js
 const { Client: Lavaqueue } = require('lavaqueue');
-const voice = new class extends Lavaqueue {
-  constructor() {
-    super({
-      userID: '', // the user that will be sending audio
-      password: '', // your lavalink password
-      hosts: {
-        rest: '', // your lavalink rest endpoint (include port and protocol)
-        ws: '', // your lavalink ws endpoint (include port and protocol)
-        redis: '', // your redis instance
-      },
-    });
-  }
-
+const voice = new class extends Lavaqueue({
+  userID: '', // the user that will be sending audio
+  password: '', // your lavalink password
+  hosts: {
+    rest: '', // your lavalink rest endpoint (include port and protocol)
+    ws: '', // your lavalink ws endpoint (include port and protocol)
+    redis: '', // your redis instance
+  },
   send(guildID, packet) {
     // send the packet to the appropriate gateway connection
-  }
-};
+  },
+});
 
 async function connect() {
   const res = await voice.load('some identifier');
