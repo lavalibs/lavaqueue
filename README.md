@@ -6,7 +6,7 @@ A simple queue system for Lavalink, backed by Redis. Built as extension of [my g
 
 ```js
 const { Client: Lavaqueue } = require('lavaqueue');
-const voice = new class extends Lavaqueue({
+const voice = new Lavaqueue({
   userID: '', // the user that will be sending audio
   password: '', // your lavalink password
   hosts: {
