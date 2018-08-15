@@ -1402,9 +1402,9 @@ last-run@^1.1.0:
     default-resolution "^2.0.0"
     es6-weak-map "^2.0.1"
 
-lavalink@^1.1.0:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/lavalink/-/lavalink-1.1.1.tgz#d8d0440e13faba1ee7effe022824bcf85525bd03"
+lavalink@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/lavalink/-/lavalink-2.0.0.tgz#01382f97353065ed3739af49c134cecffe35ef2e"
   dependencies:
     ws "^5.2.0"
 

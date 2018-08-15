@@ -14,7 +14,7 @@
     "ioredis": "^3.2.2"
   },
   "peerDependencies": {
-    "lavalink": "^1.1.0"
+    "lavalink": "^2.0.0"
   },
   "devDependencies": {
     "@spectacles/gateway": "^0.10.0",
@@ -27,7 +27,7 @@
     "gulp": "^4.0.0",
     "gulp-sourcemaps": "^2.6.4",
     "gulp-typescript": "^4.0.1",
-    "lavalink": "^1.1.0",
+    "lavalink": "^2.0.0",
     "merge-stream": "^1.0.1",
     "typescript": "^2.7.2"
   }
