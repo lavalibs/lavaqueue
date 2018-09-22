@@ -1,10 +1,30 @@
 import Queue from './Queue';
-import Client from 'lavalink';
-import * as Redis from 'ioredis';
+import Client from './';
+import Redis = require('ioredis');
+import path = require('path');
+import fs = require('fs');
+
+export interface ExtendedRedis extends Redis.Redis {
+  multirpoplpush: (source: string, dest: string, count: number) => Promise<string[]>;
+  lshuffle: (key: string) => Promise<string[]>;
+}
 
 export default class QueueStore extends Map<string, Queue> {
-  constructor(public readonly client: Client, public redis: Redis.Redis) {
+  public redis: ExtendedRedis;
+
+  constructor(public readonly client: Client, redis: Redis.Redis) {
     super();
+
+    this.redis = redis as any;
+    this.redis.defineCommand('multirpoplpush', {
+      numberOfKeys: 2,
+      lua: fs.readFileSync(path.resolve(__dirname, 'scripts', 'multirpoplpush.lua')).toString(),
+    });
+
+    this.redis.defineCommand('lshuffle', {
+      numberOfKeys: 1,
+      lua: fs.readFileSync(path.resolve(__dirname, 'scripts', 'lshuffle.lua')).toString(),
+    });
   }
 
   public get(key: string): Queue {

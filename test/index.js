@@ -1,23 +1,18 @@
 const { Client: Lavaqueue } = require('../dist');
 const { Client: Gateway } = require('@spectacles/gateway');
 const gateway = new Gateway(process.env.TOKEN);
-const client = new class extends Lavaqueue {
-  constructor() {
-    super({
-      userID: '218844420613734401',
-      password: 'youshallnotpass',
-      hosts: {
-        ws: 'http://localhost:8080',
-        rest: 'http://localhost:8081',
-        redis: { host: 'localhost' },
-      },
-    });
-  }
-
+const client = new Lavaqueue({
+  userID: '218844420613734401',
+  password: 'youshallnotpass',
+  hosts: {
+    ws: 'http://localhost:8080',
+    rest: 'http://localhost:8081',
+    redis: { host: 'localhost' },
+  },
   send(guildID, packet) {
     return gateway.connections.get(0).send(packet);
-  }
-};
+  },
+});
 
 gateway.on('VOICE_STATE_UPDATE', (shard, d) => {
   client.voiceStateUpdate(d);
@@ -31,11 +26,9 @@ const queue = client.queues.get('281630801660215296');
 gateway.on('MESSAGE_CREATE', async (shard, m) => {
   console.log(m.content);
 
-  const queue = await client.queues.get('281630801660215296');
-
   if (m.content === 'add') {
-    const songs = await client.load('https://twitch.tv/monstercat');
-    await queue.add(...songs.map(s => s.track));
+    const res = await client.load('https://www.youtube.com/playlist?list=PLyBpB3ighZijdaq0QsA77iQVvE39gJ9-U');
+    await queue.add(...res.tracks.map(s => s.track));
     return;
   }
 
@@ -52,7 +45,9 @@ gateway.on('MESSAGE_CREATE', async (shard, m) => {
   }
 });
 
+gateway.on('READY', console.log);
+
 (async () => {
   await gateway.spawn();
-  // await client.queues.redis.flushall();
+  await client.queues.redis.flushall();
 })();
