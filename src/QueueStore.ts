@@ -6,7 +6,7 @@ import fs = require('fs');
 
 export interface ExtendedRedis extends Redis.Redis {
   multirpoplpush: (source: string, dest: string, count: number) => Promise<string[]>;
-  lshuffle: (key: string) => Promise<string[]>;
+  lshuffle: (key: string, seed: number) => Promise<string[]>;
 }
 
 export default class QueueStore extends Map<string, Queue> {

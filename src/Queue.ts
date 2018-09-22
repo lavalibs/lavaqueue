@@ -44,17 +44,10 @@ export default class Queue extends EventEmitter {
 
   public async start(): Promise<boolean> {
     const np = await this.current();
-    if (!np) {
-      const list = await this._next({ previous: np });
-      return Boolean(list.length);
-    }
+    if (!np) return this._next({ previous: np });
 
-    if (np.track) {
-      await this.player.play(np.track, { start: np.position });
-      return true;
-    }
-
-    return false;
+    await this.player.play(np.track, { start: np.position });
+    return true;
   }
 
   public add(...tracks: string[]): Promise<number> {
@@ -71,13 +64,12 @@ export default class Queue extends EventEmitter {
     return this._redis.lrem(this.keys.next, 1, track);
   }
 
-  public async next(count: number = 1): Promise<boolean> {
-    const list = await this._next({ count });
-    return Boolean(list.length);
+  public next(count: number = 1): Promise<boolean> {
+    return this._next({ count });
   }
 
   public shuffle(): Promise<string[]> {
-    return this._redis.lshuffle(this.keys.next);
+    return this._redis.lshuffle(this.keys.next, Date.now());
   }
 
   public trim(start: number, end: number): PromiseLike<string> {
@@ -108,23 +100,26 @@ export default class Queue extends EventEmitter {
     return null;
   }
 
-  public tracks(start: number = 0, end: number = -1): PromiseLike<string[]> {
+  public async tracks(start: number = 0, end: number = -1): Promise<string[]> {
     if (end === Infinity) end = -1;
-    return this._redis.lrange(this.keys.next, start, end);
+
+    const tracks = await this._redis.lrange(this.keys.next, start, end);
+    return tracks.reverse();
   }
 
-  protected async _next({ count, previous }: { count?: number, previous?: NP | null } = {}): Promise<string[]> {
+  protected async _next({ count, previous }: { count?: number, previous?: NP | null } = {}): Promise<boolean> {
     if (!previous) previous = await this.current();
     if (!count && previous) count = this.store.client.advanceBy(this, previous.track);
-    if (count === 0) return [];
+    if (count === 0) return false;
 
     const next = await this._redis.multirpoplpush(this.keys.next, this.keys.prev, count || 1);
     if (next.length) {
       await this._redis.set(this.keys.pos, 0);
       await this.start();
+      return true;
     }
 
-    return next;
+    return false;
   }
 
   protected get _redis(): ExtendedRedis {
