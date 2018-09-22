@@ -1,5 +1,4 @@
 import { Player } from 'lavalink';
-import { Redis } from 'ioredis';
 import QueueStore, { ExtendedRedis } from './QueueStore';
 import { EventEmitter } from 'events';
 
@@ -20,8 +19,8 @@ export default class Queue extends EventEmitter {
     };
 
     this.on('event', async (d) => {
-      // if the track wasn't replaced, continue playing the next song
-      if (d.reason !== 'REPLACED') {
+      // if the track wasn't replaced or manually stopped, continue playing the next song
+      if (!['REPLACED', 'STOPPED'].includes(d.reason)) {
         try {
           await this._next();
         } catch (e) {
@@ -116,7 +115,6 @@ export default class Queue extends EventEmitter {
 
   protected async _next({ count, previous }: { count?: number, previous?: NP | null } = {}): Promise<string[]> {
     if (!previous) previous = await this.current();
-
     if (!count && previous) count = this.store.client.advanceBy(this, previous.track);
     if (count === 0) return [];
 

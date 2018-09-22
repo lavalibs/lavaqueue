@@ -11,7 +11,7 @@ end
 
 if COUNT <= 0 then return {} end
 
-elems = {}
+local elems = {}
 for i = 1, COUNT do
   elems[i] = redis.call('rpop', SOURCE) -- pop elements into a table
 end
