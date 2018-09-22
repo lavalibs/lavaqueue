@@ -3,10 +3,12 @@ import Client from './';
 import Redis = require('ioredis');
 import path = require('path');
 import fs = require('fs');
+import commands from './commands';
 
 export interface ExtendedRedis extends Redis.Redis {
-  multirpoplpush: (source: string, dest: string, count: number) => Promise<string[]>;
+  loverride: (key: string, ...args: any[]) => Promise<number>;
   lshuffle: (key: string, seed: number) => Promise<string[]>;
+  multirpoplpush: (source: string, dest: string, count: number) => Promise<string[]>;
 }
 
 export default class QueueStore extends Map<string, Queue> {
@@ -16,15 +18,13 @@ export default class QueueStore extends Map<string, Queue> {
     super();
 
     this.redis = redis as any;
-    this.redis.defineCommand('multirpoplpush', {
-      numberOfKeys: 2,
-      lua: fs.readFileSync(path.resolve(__dirname, 'scripts', 'multirpoplpush.lua')).toString(),
-    });
 
-    this.redis.defineCommand('lshuffle', {
-      numberOfKeys: 1,
-      lua: fs.readFileSync(path.resolve(__dirname, 'scripts', 'lshuffle.lua')).toString(),
-    });
+    for (const command of commands) {
+      this.redis.defineCommand(command.name, {
+        numberOfKeys: command.keys,
+        lua: fs.readFileSync(path.resolve(__dirname, 'scripts', `${command.name}.lua`)).toString(),
+      });
+    }
   }
 
   public get(key: string): Queue {

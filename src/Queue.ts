@@ -68,6 +68,12 @@ export default class Queue extends EventEmitter {
     return this._next({ count });
   }
 
+  public async sort(predicate?: (a: string, b: string) => number): Promise<number> {
+    const tracks = await this.tracks();
+    tracks.sort(predicate);
+    return this._redis.loverride(this.keys.next, ...tracks);
+  }
+
   public shuffle(): Promise<string[]> {
     return this._redis.lshuffle(this.keys.next, Date.now());
   }
