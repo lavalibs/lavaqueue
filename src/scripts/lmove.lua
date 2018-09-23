@@ -12,5 +12,5 @@ local val = table.remove(list, #list - FROM)
 table.insert(list, #list - TO + 1, val)
 
 redis.call('del', KEY)
-redis.call('lpush', KEY, unpack(list))
+redis.call('rpush', KEY, unpack(list))
 return list
