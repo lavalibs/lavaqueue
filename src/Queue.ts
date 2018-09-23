@@ -74,6 +74,11 @@ export default class Queue extends EventEmitter {
     return this._redis.loverride(this.keys.next, ...tracks);
   }
 
+  public async move(from: number, to: number): Promise<string[]> {
+    const list = await this._redis.lmove(this.keys.next, from, to);
+    return list.reverse();
+  }
+
   public shuffle(): Promise<string[]> {
     return this._redis.lshuffle(this.keys.next, Date.now());
   }

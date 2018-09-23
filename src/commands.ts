@@ -5,6 +5,10 @@ interface RedisCommand {
 
 const commands: RedisCommand[] = [
   {
+    name: 'lmove',
+    keys: 1,
+  },
+  {
     name: 'loverride',
     keys: 1,
   },
