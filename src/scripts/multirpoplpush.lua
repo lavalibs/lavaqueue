@@ -7,8 +7,8 @@ if COUNT == 0 then return {} end
 if COUNT == 1 then -- if there's only one, redis has a built-in command for this
   local key = redis.call('rpoplpush', SOURCE, DESTINATION)
 
-  if key == nil then return {} end
-  return {key}
+  if key then return {key} end
+  return {}
 end
 
 local elems = {}
