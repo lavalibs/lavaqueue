@@ -11,7 +11,7 @@ if FROM == TO then return list end
 if FROM < 0 then FROM = #list + FROM end
 if TO < 0 then TO = #list + TO end
 
--- list is reversed, and provided indexes are 0-based
+-- provided indexes are 0-based
 local val = table.remove(list, FROM + 1)
 table.insert(list, TO + 1, val)
 
