@@ -13,7 +13,7 @@ export default class Queue extends EventEmitter {
   constructor(public readonly store: QueueStore, public readonly guildID: string) {
     super();
     this.keys = {
-      next: `playlists.${this.guildID}.next`,
+      next: `playlists.${this.guildID}.next`, // stored in reverse order: right-most (last) element is the next in queue
       pos: `playlists.${this.guildID}.pos`,
       prev: `playlists.${this.guildID}.prev`, // left-most (first) element is the currently playing track
     };
@@ -75,7 +75,7 @@ export default class Queue extends EventEmitter {
   }
 
   public async move(from: number, to: number): Promise<string[]> {
-    const list = await this._redis.lmove(this.keys.next, from, to);
+    const list = await this._redis.lmove(this.keys.next, -from - 1, -to - 1); // work from the end of the list, since it's reversed
     return list.reverse();
   }
 
