@@ -11,7 +11,7 @@
     "start:dev": "gulp && env-cmd .env node --trace-warnings test/index.js"
   },
   "dependencies": {
-    "ioredis": "^3.2.2"
+    "ioredis": "^4.0.0"
   },
   "peerDependencies": {
     "lavalink": "^2.0.0"

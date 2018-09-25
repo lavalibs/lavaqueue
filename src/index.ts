@@ -10,12 +10,12 @@ export interface Options extends NodeOptions {
     rest?: string;
     redis?: Redis.Redis | Redis.RedisOptions;
   },
-  advanceBy?: (queue: Queue, endedTrack: string) => number;
+  advanceBy?: (queue: Queue, info: { previous: string, remaining: number }) => number;
 }
 
 export abstract class Client extends BaseClient {
   public readonly queues: QueueStore;
-  public advanceBy: (queue: Queue, endedTrack: string) => number;
+  public advanceBy: (queue: Queue, info: { previous: string, remaining: number }) => number;
 
   constructor(opts: Options) {
     if (!opts.hosts || !opts.hosts.redis) throw new Error('cannot make a queue without a Redis connection');

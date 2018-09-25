@@ -68,6 +68,10 @@ export default class Queue extends EventEmitter {
     return this._next({ count });
   }
 
+  public length(): PromiseLike<number> {
+    return this._redis.llen(this.keys.next);
+  }
+
   public async sort(predicate?: (a: string, b: string) => number): Promise<number> {
     const tracks = await this.tracks();
     tracks.sort(predicate);
@@ -120,7 +124,10 @@ export default class Queue extends EventEmitter {
 
   protected async _next({ count, previous }: { count?: number, previous?: NP | null } = {}): Promise<boolean> {
     if (!previous) previous = await this.current();
-    if (!count && previous) count = this.store.client.advanceBy(this, previous.track);
+    if (!count && previous) {
+      const length = await this.length();
+      count = this.store.client.advanceBy(this, { previous: previous.track, remaining: length });
+    }
     if (count === 0) return false;
 
     const next = await this._redis.multirpoplpush(this.keys.next, this.keys.prev, count || 1);
