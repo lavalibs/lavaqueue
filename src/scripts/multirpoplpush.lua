@@ -15,14 +15,14 @@ local elems = {}
 if COUNT < 0 then -- negative numbers mean we need to reverse direction
   for i = 1, COUNT * -1 do
     elems[i] = redis.call('lpop', DESTINATION)
-    if elems[i] == nil then break end
+    if not elems[i] then break end
   end
 
   if #elems > 0 then redis.call('rpush', SOURCE, unpack(elems)) end
 else
   for i = 1, COUNT do
     elems[i] = redis.call('rpop', SOURCE)
-    if elems[i] == nil then break end
+    if not elems[i] then break end
   end
 
   if #elems > 0 then redis.call('lpush', DESTINATION, unpack(elems)) end
