@@ -44,7 +44,7 @@ export default class Queue extends EventEmitter {
 
   public async start(): Promise<boolean> {
     const np = await this.current();
-    if (!np) return this._next({ previous: np });
+    if (!np) return this._next();
 
     await this.player.play(np.track, { start: np.position });
     return true;
@@ -123,20 +123,17 @@ export default class Queue extends EventEmitter {
   }
 
   protected async _next({ count, previous }: { count?: number, previous?: NP | null } = {}): Promise<boolean> {
+    await this._redis.set(this.keys.pos, 0);
+
     if (!previous) previous = await this.current();
-    if (!count && previous) {
+    if (count === undefined && previous) {
       const length = await this.length();
       count = this.store.client.advanceBy(this, { previous: previous.track, remaining: length });
     }
-    if (count === 0) return false;
+    if (count === 0) return this.start();
 
-    const next = await this._redis.multirpoplpush(this.keys.next, this.keys.prev, count || 1);
-    if (next.length) {
-      await this._redis.set(this.keys.pos, 0);
-      await this.start();
-      return true;
-    }
-
+    const skipped = await this._redis.multirpoplpush(this.keys.next, this.keys.prev, count || 1);
+    if (skipped.length) return this.start();
     return false;
   }
 
