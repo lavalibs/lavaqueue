@@ -13,7 +13,7 @@ export interface Options extends NodeOptions {
   advanceBy?: (queue: Queue, info: { previous: string, remaining: number }) => number;
 }
 
-export abstract class Client extends BaseClient {
+export class Client extends BaseClient {
   public readonly queues: QueueStore;
   public advanceBy: (queue: Queue, info: { previous: string, remaining: number }) => number;
 
