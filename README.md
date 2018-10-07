@@ -1,5 +1,7 @@
 # Lavaqueue
 
+[![lavalibs support server](https://discordapp.com/api/guilds/494948120103485440/embed.png)](https://discord.gg/jXSKeW5)
+
 A simple queue system for Lavalink, backed by Redis. Built as extension of [my generic Lavalink wrapper](https://github.com/appellation/lavalink.js).
 
 ## How to use
