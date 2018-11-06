@@ -134,6 +134,8 @@ export default class Queue extends EventEmitter {
 
     const skipped = await this._redis.multirpoplpush(this.keys.next, this.keys.prev, count || 1);
     if (skipped.length) return this.start();
+
+    await this.clear(); // we're at the end of the queue, so clear everything out
     return false;
   }
 
