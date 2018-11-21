@@ -12,7 +12,7 @@ export interface Options extends NodeOptions {
   }
 }
 
-export abstract class Client extends BaseClient {
+export class Client extends BaseClient {
   public readonly queues: QueueStore;
 
   constructor(opts: Options) {
