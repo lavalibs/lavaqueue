@@ -1,6 +1,6 @@
 {
   "name": "lavaqueue",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "A queue system for lavalink, backed by redis.",
   "main": "dist/index.js",
   "types": "typings/index.d.ts",
