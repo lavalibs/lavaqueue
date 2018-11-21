@@ -19,7 +19,6 @@
     "@types/ioredis": "^3.2.7",
     "@types/node": "^9.4.6",
     "@types/ws": "^4.0.1",
-    "discord.js": "^11.3.2",
     "env-cmd": "^8.0.2",
     "fs-nextra": "^0.3.7",
     "gulp": "^4.0.0",
