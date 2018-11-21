@@ -19,6 +19,11 @@ const voice = new Lavaqueue({
   send(guildID, packet) {
     // send the packet to the appropriate gateway connection
   },
+  advanceBy(queue, { previous, remaining }) { // optional
+    // called at the end of a track when the queue is otherwise unaware of how many tracks to
+    // advance by; returns a number: 0 to repeat, negative to advance in reverse, positive to
+    // advance forward
+  },
 });
 
 async function connect() {
@@ -46,12 +51,15 @@ Queues are resilient to crashes, meaning it's safe to blindly restart a queue: i
 ### `Queue`
 - `store: QueueStore`
 - `guildID: string`
-- *readonly* `player` - the [lavalink](https://github.com/appellation/lavalink.js) player
+- *readonly* `player` - the [lavalink](https://github.com/lavalibs/lavalink.js) player
 - `start(): Promise<boolean>` - start the queue
 - `add(...tracks: string[]): Promise<number>` - add tracks to the queue
 - `unshift(...tracks: string[]): Promise<number>` - add tracks to the front of the queue
 - `remove(track: string): PromiseLike<number>` - remove a track from the queue
-- `next(count?: number): Promise<boolean>` - skip to the next song
+- `next(count: number = 1): Promise<boolean>` - skip to the next song; pass negatives to advance in reverse, or 0 to repeat
+- `sort(predicate?: (a: string, b: string) => number): Promise<number>` - sort the upcoming tracks; resolves with the length of the queue
+- `move(from: number, to: number): Promise<string[]>` - move a track by index; resolves with the new list
+- `shuffle(): Promise<string[]>` - shuffle the list; resolves with the new list
 - `trim(start: number, end: number): PromiseLike<string>` - trim the queue to between the specified positions
 - `stop(): Promise<void>` - stop playback and clear the queue
 - `clear(): PromiseLike<number>` - clear the queued songs
@@ -60,7 +68,7 @@ Queues are resilient to crashes, meaning it's safe to blindly restart a queue: i
 
 ```ts
 interface NP {
-  position?: number;
+  position: number;
   track: string;
 }
 ```
