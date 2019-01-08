@@ -27,7 +27,7 @@ gateway.on('MESSAGE_CREATE', async (shard, m) => {
   console.log(m.content);
 
   if (m.content === 'add') {
-    const res = await client.load('https://www.youtube.com/playlist?list=PLyBpB3ighZiiSBfi9Gs_bEt77rsgo77Fy');
+    const res = await client.load('https://www.youtube.com/playlist?list=PL29EB1A8E5BF708F4');
     await queue.add(...res.tracks.map(s => s.track));
     return;
   }

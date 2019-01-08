@@ -13,6 +13,10 @@ const commands: RedisCommand[] = [
     keys: 1,
   },
   {
+    name: 'lrevsplice',
+    keys: 1,
+  },
+  {
     name: 'lshuffle',
     keys: 1,
   },

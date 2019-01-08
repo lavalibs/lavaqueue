@@ -8,6 +8,7 @@ import commands from './commands';
 export interface ExtendedRedis extends Redis.Redis {
   lmove: (key: string, from: number, to: number) => Promise<string[]>;
   loverride: (key: string, ...args: any[]) => Promise<number>;
+  lrevsplice: (key: string, start: number, deleteCount?: number, ...args: any[]) => Promise<string[]>;
   lshuffle: (key: string, seed: number) => Promise<string[]>;
   multirpoplpush: (source: string, dest: string, count: number) => Promise<string[]>;
 }

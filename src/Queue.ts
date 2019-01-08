@@ -87,6 +87,10 @@ export default class Queue extends EventEmitter {
     return this._redis.lshuffle(this.keys.next, Date.now());
   }
 
+  public splice(start: number, deleteCount?: number, ...tracks: string[]): Promise<string[]> {
+    return this._redis.lrevsplice(this.keys.next, start, deleteCount, ...tracks);
+  }
+
   public trim(start: number, end: number): PromiseLike<string> {
     return this._redis.ltrim(this.keys.next, start, end);
   }
