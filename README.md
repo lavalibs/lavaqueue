@@ -60,6 +60,7 @@ Queues are resilient to crashes, meaning it's safe to blindly restart a queue: i
 - `sort(predicate?: (a: string, b: string) => number): Promise<number>` - sort the upcoming tracks; resolves with the length of the queue
 - `move(from: number, to: number): Promise<string[]>` - move a track by index; resolves with the new list
 - `shuffle(): Promise<string[]>` - shuffle the list; resolves with the new list
+- `splice(start: number, deleteCount?: number, ...tracks: string[]): Promise<string[]>` - splice the list at the given position; works like [Array#splice](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/splice)
 - `trim(start: number, end: number): PromiseLike<string>` - trim the queue to between the specified positions
 - `stop(): Promise<void>` - stop playback and clear the queue
 - `clear(): PromiseLike<number>` - clear the queued songs
