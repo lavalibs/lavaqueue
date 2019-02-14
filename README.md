@@ -62,8 +62,8 @@ Queues are resilient to crashes, meaning it's safe to blindly restart a queue: i
 - `shuffle(): Promise<string[]>` - shuffle the list; resolves with the new list
 - `splice(start: number, deleteCount?: number, ...tracks: string[]): Promise<string[]>` - splice the list at the given position; works like [Array#splice](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/splice)
 - `trim(start: number, end: number): PromiseLike<string>` - trim the queue to between the specified positions
-- `stop(): Promise<void>` - stop playback and clear the queue
-- `clear(): PromiseLike<number>` - clear the queued songs
+- `stop(): Promise<void>` - stop playback
+- `clear(): PromiseLike<number>` - clear the queue
 - `current(): Promise<NP | null>` - retrieve the current song: returns an object with properties `track` and `position`
 - `tracks(start: number = 0, end: number = -1): Promise<string[]>` - retrieves queued tracks
 
