@@ -2,7 +2,7 @@ import BaseClient from 'lavalink';
 import Redis = require('ioredis');
 import QueueStore from './QueueStore';
 import Queue from './Queue';
-import { NodeOptions } from 'lavalink/typings/Node';
+import { NodeOptions } from 'lavalink';
 
 export interface Options extends NodeOptions {
   hosts?: {
