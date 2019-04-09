@@ -12,10 +12,11 @@
   },
   "dependencies": {
     "ioredis": "^4.0.0",
-    "lavalink": "^2.2.1"
+    "lavalink": "^2.6.1"
   },
   "devDependencies": {
     "@spectacles/gateway": "^0.10.0",
+    "@types/backoff": "^2.5.1",
     "@types/ioredis": "^3.2.7",
     "@types/node": "^9.4.6",
     "@types/ws": "^4.0.1",

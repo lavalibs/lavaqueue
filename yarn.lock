@@ -40,6 +40,13 @@
   optionalDependencies:
     erlpack "github:discordapp/erlpack"
 
+"@types/backoff@^2.5.1":
+  version "2.5.1"
+  resolved "https://registry.yarnpkg.com/@types/backoff/-/backoff-2.5.1.tgz#343d0f5c75c2c65d1f90f954f469506a3b4a41ed"
+  integrity sha512-eUNAT0dGCma0K35XcScxCP5usgCyxFypkVUN1TiHLhqGzbLnb/fVhz5yoXzj/SYLuXxE9SK6k4m+FQZQqQ4QaQ==
+  dependencies:
+    "@types/node" "*"
+
 "@types/bluebird@*":
   version "3.5.23"
   resolved "https://registry.yarnpkg.com/@types/bluebird/-/bluebird-3.5.23.tgz#e805da976b76892b2b2e50eec29e84914c730670"
@@ -1572,7 +1579,7 @@ last-run@^1.1.0:
     default-resolution "^2.0.0"
     es6-weak-map "^2.0.1"
 
-lavalink@^2.2.1:
+lavalink@^2.6.1:
   version "2.6.1"
   resolved "https://registry.yarnpkg.com/lavalink/-/lavalink-2.6.1.tgz#5aa38b3792d807c765199ce6d8be51b7bca04bf5"
   integrity sha512-ByiWmGdISzFbAA3B9v1/6+1yQn2RY8/W8PR/Z6qII424pBvIMnGxns43ZpPfdRSmsxvyDThHHB5n5mPw8bnlHg==
