@@ -24,13 +24,11 @@ export class Client extends BaseClient {
     this.queues = new QueueStore(this, opts.hosts.redis instanceof Redis ? opts.hosts.redis : new Redis(opts.hosts.redis));
     this.advanceBy = opts.advanceBy || (() => 1);
 
-    this.on('event', (d) => {
-      this.queues.get(d.guildId).emit('event', d);
-    });
-
-    this.on('playerUpdate', (d) => {
-      this.queues.get(d.guildId).emit('playerUpdate', d);
-    });
+    for (const name of ['event', 'playerUpdate']) {
+      this.on(name, (d) => {
+        this.queues.get(d.guildId).emit(name, d);
+      });
+    }
   }
 }
 
