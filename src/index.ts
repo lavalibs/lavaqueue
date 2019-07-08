@@ -2,8 +2,9 @@ import Node from './Node';
 import QueueStore from './QueueStore';
 import Queue from './Queue';
 
-export const Client = Node;
+const Client = Node;
 export {
+  Client,
   QueueStore,
   Queue,
 }
