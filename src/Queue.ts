@@ -133,7 +133,7 @@ export default class Queue extends EventEmitter {
     if (!previous) previous = await this.current();
     if (count === undefined && previous) {
       const length = await this.length();
-      count = this.store.client.advanceBy(this, { previous: previous.track, remaining: length });
+      count = this.store.client.advanceBy(this, { previous, remaining: length });
     }
     if (count === 0) return this.start();
 
