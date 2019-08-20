@@ -23,7 +23,7 @@ export default class Queue extends EventEmitter {
       if (d.type !== 'TrackEndEvent' || !['REPLACED', 'STOPPED'].includes(d.reason)) {
         let count = d.type === 'TrackEndEvent' ? undefined : 1;
         try {
-          await this._next({ count, previous: d.track });
+          await this._next({ count, previous: d });
         } catch (e) {
           this.store.client.emit('error', e);
         }
@@ -133,7 +133,7 @@ export default class Queue extends EventEmitter {
     if (!previous) previous = await this.current();
     if (count === undefined && previous) {
       const length = await this.length();
-      count = this.store.client.advanceBy(this, { previous, remaining: length });
+      count = this.store.client.advanceBy(this, { previous: previous.track, remaining: length });
     }
     if (count === 0) return this.start();
 
