@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "ioredis": "^4.0.0",
-    "lavalink": "^2.6.1"
+    "lavalink": "^2.10.0"
   },
   "devDependencies": {
     "@spectacles/gateway": "^0.10.0",
