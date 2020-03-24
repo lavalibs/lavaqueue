@@ -20,7 +20,7 @@ export default class Queue extends EventEmitter {
 
     this.on('event', async (d) => {
       // if the track wasn't replaced or manually stopped, continue playing the next song
-      if (d.type !== 'TrackEndEvent' || !['REPLACED', 'STOPPED'].includes(d.reason)) {
+      if (!["TrackEndEvent","TrackStartEvent"].includes(d.type) || (d.type === "TrackEndEvent" && !['REPLACED', 'STOPPED'].includes(d.reason))) {
         let count = d.type === 'TrackEndEvent' ? undefined : 1;
         try {
           await this._next({ count, previous: d });
