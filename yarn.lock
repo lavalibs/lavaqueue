@@ -89,9 +89,9 @@ abbrev@1:
   integrity sha512-nne9/IiQ/hzIhY6pdDnbBtz7DjPTKrY00P/zvPSm5pOFkl6xuGrGnXn/VtTNNfNtAfZ9/1RtehkszU9qcTii0Q==
 
 acorn@5.X, acorn@^5.0.3:
-  version "5.7.1"
-  resolved "https://registry.yarnpkg.com/acorn/-/acorn-5.7.1.tgz#f095829297706a7c9776958c0afc8930a9b9d9d8"
-  integrity sha512-d+nbxBUGKg7Arpsvbnlq61mc12ek3EY8EQldM3GPAhWJ1UVxC6TDGbIvUMNU6obBX3i1+ptCIzV4vq0gFPEGVQ==
+  version "5.7.4"
+  resolved "https://registry.yarnpkg.com/acorn/-/acorn-5.7.4.tgz#3e8d8a9947d0599a1796d10225d7432f4a4acf5e"
+  integrity sha512-1D++VG7BhrtvQpNbBzovKNc1FLGGEE/oGe7b9xJm/RFHMBeUaUGpluV9RLjZa47YFdPcDAenEYuq9pQPcMdLJg==
 
 amdefine@>=0.0.4:
   version "1.0.1"
@@ -1579,10 +1579,10 @@ last-run@^1.1.0:
     default-resolution "^2.0.0"
     es6-weak-map "^2.0.1"
 
-lavalink@^2.6.1:
-  version "2.8.0"
-  resolved "https://registry.yarnpkg.com/lavalink/-/lavalink-2.8.0.tgz#cd655523bb720faf786bb4c82cd7741caa48eb2a"
-  integrity sha512-Xsxx0R8jCZIWGYbK0RmRTy+uOBTP2d8cQIzMGmOyHng0PibeL7filXZS5mV0PLOBGaS93mvag2Mv6BilRph3Yg==
+lavalink@^2.10.0:
+  version "2.10.0"
+  resolved "https://registry.yarnpkg.com/lavalink/-/lavalink-2.10.0.tgz#c2ce02926fc5e957252b407eb4f87dd67dd32378"
+  integrity sha512-3fgyzeHm98rL+S8lMsJKL3pIOkYNVGWLBdkm6U5Sk2KWHGKgKZnmLXWIyvVD3Yqrz4PzER0MWtEk3LknQ4VjCw==
   dependencies:
     backoff "^2.5.0"
     ws "^6.0.0"
