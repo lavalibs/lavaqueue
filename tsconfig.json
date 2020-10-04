@@ -10,7 +10,9 @@
     ],
     "declaration": true,
     "sourceMap": true,
-    "removeComments": false
+    "removeComments": false,
+    "outDir": "dist",
+    "declarationDir": "typings"
   },
   "include": [
     "./src/"
