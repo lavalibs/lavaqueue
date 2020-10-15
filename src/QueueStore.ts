@@ -24,7 +24,7 @@ export default class QueueStore extends Map<string, Queue> {
     for (const command of commands) {
       this.redis.defineCommand(command.name, {
         numberOfKeys: command.keys,
-        lua: fs.readFileSync(path.resolve(__dirname, 'scripts', `${command.name}.lua`)).toString(),
+        lua: fs.readFileSync(path.resolve(__dirname, '..', 'scripts', `${command.name}.lua`)).toString(),
       });
     }
   }
